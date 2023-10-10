@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
@@ -9,13 +11,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: firstpage(),
+      theme: ThemeData.light(),
+      home: const firstpage(),
     );
   }
 }
@@ -30,13 +31,13 @@ class firstpage extends StatefulWidget {
 class _firstpageState extends State<firstpage> {
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
+    var mediaQueryvar = MediaQuery.of(context);
 
     return Scaffold(
       body: Center(
         child: Container(
-            width: _mediaQuery.size.width,
-            height: _mediaQuery.size.height,
+            width: mediaQueryvar.size.width,
+            height: mediaQueryvar.size.height,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
@@ -46,9 +47,9 @@ class _firstpageState extends State<firstpage> {
               children: [
                 Center(
                   child: Container(
-                    width: _mediaQuery.size.width * 0.9,
-                    height: _mediaQuery.size.height * 0.8,
-                    margin: EdgeInsets.all(100),
+                    width: mediaQueryvar.size.width * 0.9,
+                    height: mediaQueryvar.size.height * 0.8,
+                    margin: const EdgeInsets.all(100),
                     decoration: const BoxDecoration(
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
@@ -58,8 +59,8 @@ class _firstpageState extends State<firstpage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
-                              width: _mediaQuery.size.width * 0.5,
-                              height: _mediaQuery.size.height * 0.4,
+                              width: mediaQueryvar.size.width * 0.5,
+                              height: mediaQueryvar.size.height * 0.4,
                               decoration: const BoxDecoration(
                                   image: DecorationImage(
                                 image: AssetImage('assets/firstpage.png'),
@@ -67,59 +68,60 @@ class _firstpageState extends State<firstpage> {
                           Column(
                             children: <Widget>[
                               SizedBox(
-                                height: _mediaQuery.size.height * 0.1,
+                                height: mediaQueryvar.size.height * 0.1,
                               ),
                               SizedBox(
-                                height: _mediaQuery.size.height * 0.1,
+                                height: mediaQueryvar.size.height * 0.1,
                               ),
                               Container(
-                                margin: EdgeInsets.all(4),
+                                margin: const EdgeInsets.all(4),
                                 child: Text(
                                   'Welcome',
                                   style: TextStyle(
-                                      fontSize: _mediaQuery.size.width * 0.03,
+                                      fontSize: mediaQueryvar.size.width * 0.03,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.all(4),
+                                margin: const EdgeInsets.all(4),
                                 child: Text(
                                   'To Our',
                                   style: TextStyle(
-                                      fontSize: _mediaQuery.size.width * 0.03,
+                                      fontSize: mediaQueryvar.size.width * 0.03,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.all(4),
+                                margin: const EdgeInsets.all(4),
                                 child: Text(
                                   'Online Test Platform',
                                   style: TextStyle(
-                                      fontSize: _mediaQuery.size.width * 0.03,
+                                      fontSize: mediaQueryvar.size.width * 0.03,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               SizedBox(
-                                height: _mediaQuery.size.height * 0.01,
+                                height: mediaQueryvar.size.height * 0.01,
                               ),
                               Container(
-                                margin: EdgeInsets.all(4),
+                                margin: const EdgeInsets.all(4),
                                 child: Text(
                                   'You are welcome to our new \n Online Test Platform which will\n help you to conduct examination\n',
                                   style: TextStyle(
-                                      fontSize: _mediaQuery.size.width * 0.015,
+                                      fontSize:
+                                          mediaQueryvar.size.width * 0.015,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               SizedBox(
-                                height: _mediaQuery.size.height * 0.01,
+                                height: mediaQueryvar.size.height * 0.01,
                               ),
                               SizedBox(
-                                height: _mediaQuery.size.height * 0.01,
+                                height: mediaQueryvar.size.height * 0.01,
                               ),
-                              Container(
-                                width: _mediaQuery.size.width * 0.17,
-                                height: _mediaQuery.size.height * 0.04,
+                              SizedBox(
+                                width: mediaQueryvar.size.width * 0.17,
+                                height: mediaQueryvar.size.height * 0.04,
                                 child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -167,7 +169,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
+    var mediaQueryvar = MediaQuery.of(context);
 
     return Scaffold(
         //backgroundColor: Colors.grey,
@@ -177,14 +179,14 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Center(
           child: Container(
-            width: _mediaQuery.size.width,
-            height: _mediaQuery.size.height,
+            width: mediaQueryvar.size.width,
+            height: mediaQueryvar.size.height,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [Colors.blue, Colors.greenAccent])),
-            child: Container(
+            child: SizedBox(
                 width: 430,
                 height: 300,
                 child: Center(
@@ -192,32 +194,28 @@ class _HomepageState extends State<Homepage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginStu()));
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.blue),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
+                          width: 150,
+                          height: 50,
+                          margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginStu()));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.blue),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
-                              child: const Text(
-                                'As a Student',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            ),
+                            child: const Text(
+                              'As a Student',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
@@ -265,7 +263,7 @@ class LoginStu extends StatefulWidget {
 class _LoginStuState extends State<LoginStu> {
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
+    var mediaQueryvar = MediaQuery.of(context);
 
     return Scaffold(
         //backgroundColor: Colors.grey,
@@ -275,14 +273,14 @@ class _LoginStuState extends State<LoginStu> {
         ),
         body: Center(
           child: Container(
-            width: _mediaQuery.size.width,
-            height: _mediaQuery.size.height,
+            width: mediaQueryvar.size.width,
+            height: mediaQueryvar.size.height,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [Colors.blue, Colors.greenAccent])),
-            child: Container(
+            child: SizedBox(
                 width: 430,
                 height: 300,
                 child: Center(
@@ -290,32 +288,28 @@ class _LoginStuState extends State<LoginStu> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Login()));
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.blue),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
+                          width: 150,
+                          height: 50,
+                          margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.blue),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            ),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
@@ -362,7 +356,7 @@ class LoginTeacher extends StatefulWidget {
 class _LoginTeacherState extends State<LoginTeacher> {
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
+    var mediaQueryvar = MediaQuery.of(context);
 
     return Scaffold(
         //backgroundColor: Colors.grey,
@@ -372,14 +366,14 @@ class _LoginTeacherState extends State<LoginTeacher> {
         ),
         body: Center(
           child: Container(
-            width: _mediaQuery.size.width,
-            height: _mediaQuery.size.height,
+            width: mediaQueryvar.size.width,
+            height: mediaQueryvar.size.height,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [Colors.blue, Colors.greenAccent])),
-            child: Container(
+            child: SizedBox(
                 width: 430,
                 height: 300,
                 child: Center(
@@ -387,32 +381,28 @@ class _LoginTeacherState extends State<LoginTeacher> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          child: Container(
-                            width: 150,
-                            height: 50,
-                            margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Login()));
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.blue),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
+                          width: 150,
+                          height: 50,
+                          margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.blue),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                               ),
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            ),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),

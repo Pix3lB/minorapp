@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Home.dart';
+import 'package:testproject/tdash_board.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
         child: Container(
           width: _mediaQuery.size.width,
           height: _mediaQuery.size.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
@@ -29,12 +29,12 @@ class _LoginState extends State<Login> {
           ),
           child: Column(
             children: <Widget>[
-              Text(
+              const Text(
                 'Online Exam Portal',
                 style: TextStyle(color: Colors.white, fontSize: 50),
               ),
               SizedBox(height: _mediaQuery.size.height * 0.03),
-              Text(
+              const Text(
                 'LOGIN',
                 style: TextStyle(color: Colors.yellow, fontSize: 30),
               ),
@@ -59,10 +59,10 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.all(1),
+                margin: const EdgeInsets.all(1),
                 height: _mediaQuery.size.height * 0.5,
                 width: _mediaQuery.size.width * 0.5,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/student_login.png'),
                   ),
@@ -78,36 +78,34 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildLoginFields() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: _mediaQuery.size.height * 0.03),
-          buildTextField('Email Address', Colors.black, 0.2),
-          SizedBox(height: _mediaQuery.size.height * 0.03),
-          buildTextField('Password', Colors.black, 0.2),
-          SizedBox(height: _mediaQuery.size.height * 0.03),
-          buildLoginButton(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(height: _mediaQuery.size.height * 0.03),
+        buildTextField('Email Address', Colors.black, 0.2),
+        SizedBox(height: _mediaQuery.size.height * 0.03),
+        buildTextField('Password', Colors.black, 0.2),
+        SizedBox(height: _mediaQuery.size.height * 0.03),
+        buildLoginButton(),
+      ],
     );
   }
 
   Widget buildTextField(String hintText, Color hintColor, double widthFactor) {
-    return Container(
+    return SizedBox(
       width: _mediaQuery.size.width * widthFactor,
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: hintColor),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.black),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.black),
           ),
         ),
       ),
@@ -115,13 +113,16 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildLoginButton() {
-    return Container(
+    return SizedBox(
       width: _mediaQuery.size.width * 0.09,
       height: _mediaQuery.size.height * 0.04,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TeacherDashboard(),
+              ));
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
