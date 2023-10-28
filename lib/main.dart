@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:testproject/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'login.dart';
 import 'register.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

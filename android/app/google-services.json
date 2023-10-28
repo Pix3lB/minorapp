@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076995579369",
+    "project_id": "pminor-8de3e",
+    "storage_bucket": "pminor-8de3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076995579369:android:d036901cc285f91b7c3f78",
+        "android_client_info": {
+          "package_name": "com.example.testproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjDTpv1880ziLXK2HY8VpmEp8SYCYUakc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
