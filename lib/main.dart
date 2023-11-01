@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testproject/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import './pages/home.dart';
 import 'package:testproject/widget_tree.dart';
 
 Future<void> main() async {

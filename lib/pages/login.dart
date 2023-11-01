@@ -1,9 +1,10 @@
+// ignore_for_file: camel_case_types, use_build_context_synchronously, unused_element
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../auth.dart';
 
 import '../student_dashboard.dart';
-import '../teacher_dashboard.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({super.key});
@@ -18,14 +19,28 @@ class _loginPageState extends State<loginPage> {
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerfname = TextEditingController();
+  final TextEditingController _controllerlname = TextEditingController();
+  bool isTeacher = false;
 
   Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  StudentDashboard(user: FirebaseAuth.instance.currentUser)));
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        if (e.code == 'user-not-found') {
+          errorMessage = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          errorMessage = 'Wrong password provided for that user.';
+        } else {
+          errorMessage = 'Error: ${e.code}';
+        }
       });
     }
   }
@@ -34,6 +49,23 @@ class _loginPageState extends State<loginPage> {
     try {
       await Auth().createUserWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
+      createUserProfile(FirebaseAuth.instance.currentUser);
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Future<void> createUserProfile(user) async {
+    String uid = user.uid;
+    try {
+      await Auth().createUserProfile(
+        uid: uid,
+        fname: _controllerfname.text,
+        lname: _controllerlname.text,
+        isTeacher: isTeacher,
+      );
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -49,30 +81,29 @@ class _loginPageState extends State<loginPage> {
     return const Text("Firebase Auth");
   }
 
-  Widget _entryField(
-    String title,
-    TextEditingController controller,
-  ) {
+  Widget _entryField(String title, TextEditingController controller,
+      {bool isobscure = false}) {
     return TextField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         controller: controller,
+        obscureText: isobscure,
         decoration: InputDecoration(
           labelText: title,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.white),
           hintStyle: TextStyle(color: Colors.blue[50]),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: const BorderSide(color: Colors.white)),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
           ),
         ));
   }
 
   Widget _errorMessage() {
-    return Text(errorMessage == '' ? '' : 'Error! $errorMessage',
-        style: TextStyle(color: Colors.white));
+    return Text(errorMessage == '' ? '' : 'Oh no! $errorMessage',
+        style: const TextStyle(color: Colors.white));
   }
 
   Widget _submitButton() {
@@ -105,10 +136,44 @@ class _loginPageState extends State<loginPage> {
         });
       },
       child: Text(isLogin ? 'Register instead' : 'Login instead',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             color: Colors.white,
           )),
+    );
+  }
+
+  Widget registerfield(height) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _entryField(
+          'First Name',
+          _controllerfname,
+        ),
+        div(height),
+        _entryField(
+          'Last Name',
+          _controllerlname,
+        ),
+        div(height),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Text(
+              'Are you a teacher?',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            Switch(
+                value: isTeacher,
+                onChanged: (newValue) {
+                  setState(() {
+                    isTeacher = newValue;
+                  });
+                }),
+          ],
+        )
+      ],
     );
   }
 
@@ -124,7 +189,7 @@ class _loginPageState extends State<loginPage> {
       child: Center(
         child: Container(
           padding: EdgeInsets.all(.03 * width),
-          height: .6 * height,
+          height: isLogin ? .6 * height : .7 * height,
           width: .6 * width,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -140,24 +205,21 @@ class _loginPageState extends State<loginPage> {
                   color: Colors.white,
                 ),
                 div(height),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _entryField('Email', _controllerEmail),
-                      div(height),
-                      _entryField(
-                        'Password',
-                        _controllerPassword,
-                      ),
-                      div(height),
-                      _loginOrRegister(),
-                      div(height),
-                      _submitButton(),
-                      div(height),
-                      _errorMessage(),
-                    ],
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _entryField('Email', _controllerEmail),
+                    div(height),
+                    _entryField('Password', _controllerPassword,
+                        isobscure: true),
+                    div(height),
+                    Visibility(visible: !isLogin, child: registerfield(height)),
+                    _loginOrRegister(),
+                    div(height),
+                    _submitButton(),
+                    div(height),
+                    _errorMessage(),
+                  ],
                 ),
               ]),
         ),
