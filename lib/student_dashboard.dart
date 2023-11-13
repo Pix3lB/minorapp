@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:testproject/pages/home.dart';
+import 'package:testproject/create_test.dart';
+import 'package:testproject/take_test.dart';
 
 class StudentDashboard extends StatefulWidget {
   final User? user;
 
-  StudentDashboard({required this.user});
+  const StudentDashboard({required this.user});
 
   @override
   _StudentDashboardState createState() => _StudentDashboardState();
@@ -15,6 +16,15 @@ class StudentDashboard extends StatefulWidget {
 class _StudentDashboardState extends State<StudentDashboard> {
   String firstName = '';
   String lastName = '';
+  int _currentPage = 1;
+  PageController _pageController = PageController(initialPage: 1);
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  } // Initial page is the home page
+
   @override
   void initState() {
     super.initState();
@@ -36,39 +46,78 @@ class _StudentDashboardState extends State<StudentDashboard> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pop(HomePage());
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Dashboard'),
-      ),
-      body: Center(
-        child: Column(
+        title: Text('Student Dashboard'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfilePage(user: widget.user),
+                ),
+              );
+            },
+          ),
+        ],
+        leading: IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: _signOut,
+        ),
+        flexibleSpace: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Good day $firstName $lastName'),
-            Text('Email: ${widget.user?.email}'),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the Edit Profile page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfilePage(user: widget.user),
-                  ),
-                );
-              },
-              child: const Text('Edit Profile'),
-            ),
-            ElevatedButton(
-              onPressed: _signOut, // Call the sign-out method
-              child: const Text('Sign Out'),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '$firstName $lastName',
+              style: TextStyle(color: Colors.white),
             ),
           ],
         ),
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (page) {
+          setState(() {
+            _currentPage = page;
+          });
+        },
+        children: [
+          CreateTest(), // Left page
+          Home(), // Middle page (Home)
+          TakeTest(), // Right page
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentPage,
+        onTap: (index) {
+          setState(() {
+            _currentPage = index;
+            _pageController.animateToPage(index,
+                duration: Duration(milliseconds: 500), curve: Curves.ease);
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.create),
+            label: 'Create Test',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Take Test',
+          ),
+        ],
       ),
     );
   }
@@ -82,14 +131,25 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profile'),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+        appBar: AppBar(
+          title: Text('Edit Profile'),
         ),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[],
+          ),
+        ));
+  }
+}
+
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'Welcome to the Home Page',
+        style: TextStyle(fontSize: 20),
       ),
     );
   }
