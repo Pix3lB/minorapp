@@ -6,41 +6,32 @@ import 'package:testproject/pages/home.dart';
 class StudentDashboard extends StatefulWidget {
   final User? user;
 
-  const StudentDashboard({required this.user});
+  StudentDashboard({required this.user});
 
   @override
   _StudentDashboardState createState() => _StudentDashboardState();
 }
 
 class _StudentDashboardState extends State<StudentDashboard> {
-  String firstName = ''; // Initialize with an empty string
-
-  // Future<void> fetchData() async {
-  //   try {
-  //     String userId = FirebaseAuth.instance.currentUser!.uid;
-  //     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-  //         .instance
-  //         .collection('users')
-  //         .doc(userId)
-  //         .get();
-
-  //     if (snapshot.exists) {
-  //       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-  //       setState(() {
-  //         firstName = data['fname'];
-  //       });
-  //     } else {
-  //       print('User document does not exist.');
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching data: $e');
-  //   }
-  // }
-
+  String firstName = '';
+  String lastName = '';
   @override
   void initState() {
     super.initState();
-    // fetchData(); // Fetch data when the widget is initialized
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.user?.uid)
+        .get();
+    if (userDoc.exists) {
+      setState(() {
+        firstName = userDoc.data()?['fname'] ?? '';
+        lastName = userDoc.data()?['lname'] ?? '';
+      });
+    }
   }
 
   Future<void> _signOut() async {
@@ -58,7 +49,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('First Name: $firstName'),
+            Text('Good day $firstName $lastName'),
             Text('Email: ${widget.user?.email}'),
             ElevatedButton(
               onPressed: () {
@@ -97,10 +88,7 @@ class EditProfilePage extends StatelessWidget {
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Add input fields and buttons to edit the user's profile
-            // For example, you can allow the user to change their name, email, or other information here.
-          ],
+          children: <Widget>[],
         ),
       ),
     );
