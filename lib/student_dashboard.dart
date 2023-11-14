@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,7 +55,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Student Dashboard'),
+        title: Text(' Dashboard of $firstName $lastName '),
         actions: [
           IconButton(
             icon: Icon(Icons.edit),
@@ -74,12 +76,6 @@ class _StudentDashboardState extends State<StudentDashboard> {
         flexibleSpace: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              '$firstName $lastName',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
         ),
       ),
       body: PageView(
