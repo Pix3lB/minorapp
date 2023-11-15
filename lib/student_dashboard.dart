@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testproject/create_test.dart';
-import 'package:testproject/take_test.dart';
+import 'package:testproject/TakeTestPage.dart';
+import 'package:testproject/pages/EditProfilePage.dart';
 
 class StudentDashboard extends StatefulWidget {
   final User? user;
@@ -18,6 +19,7 @@ class StudentDashboard extends StatefulWidget {
 class _StudentDashboardState extends State<StudentDashboard> {
   String firstName = '';
   String lastName = '';
+  bool isTeacher = false;
   int _currentPage = 1;
   PageController _pageController = PageController(initialPage: 1);
 
@@ -40,6 +42,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         .get();
     if (userDoc.exists) {
       setState(() {
+        isTeacher = userDoc.data()?['isTeacher'] ?? false;
         firstName = userDoc.data()?['fname'] ?? '';
         lastName = userDoc.data()?['lname'] ?? '';
       });
@@ -53,6 +56,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
 
   @override
   Widget build(BuildContext context) {
+    fetchData();
     return Scaffold(
       appBar: AppBar(
         title: Text(' Dashboard of $firstName $lastName '),
@@ -63,7 +67,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EditProfilePage(user: widget.user),
+                  builder: (context) => EditProfile(user: widget.user),
                 ),
               );
             },
@@ -86,56 +90,39 @@ class _StudentDashboardState extends State<StudentDashboard> {
           });
         },
         children: [
-          CreateTest(), // Left page
+          Visibility(
+            visible: isTeacher,
+            child: CreateTest(), // Left page (visible only for teachers)
+          ), // Left page
           Home(), // Middle page (Home)
-          TakeTest(), // Right page
+          TakeTestPage(), // Right page
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPage,
-        onTap: (index) {
-          setState(() {
-            _currentPage = index;
-            _pageController.animateToPage(index,
-                duration: Duration(milliseconds: 500), curve: Curves.ease);
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: 'Create Test',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Take Test',
-          ),
-        ],
-      ),
+          currentIndex: _currentPage,
+          onTap: (index) {
+            setState(() {
+              _currentPage = index;
+              _pageController.animateToPage(index,
+                  duration: Duration(milliseconds: 500), curve: Curves.ease);
+            });
+          },
+          items: [
+            if (isTeacher)
+              BottomNavigationBarItem(
+                icon: Icon(Icons.create),
+                label: 'Create Test',
+              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'Take Test',
+            ),
+          ]),
     );
-  }
-}
-
-class EditProfilePage extends StatelessWidget {
-  final User? user;
-
-  const EditProfilePage({required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Edit Profile'),
-        ),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[],
-          ),
-        ));
   }
 }
 
