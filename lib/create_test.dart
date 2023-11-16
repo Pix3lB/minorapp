@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateTest extends StatefulWidget {
-  const CreateTest({Key? key}) : super(key: key);
+  final User? user;
+
+  const CreateTest({Key? key, this.user}) : super(key: key);
 
   @override
   _CreateTestState createState() => _CreateTestState();
@@ -72,24 +77,42 @@ class _CreateTestState extends State<CreateTest> {
   }
 
   void saveTestToFirestore() {
-    // Validate that a test name is entered
     if (testName.isEmpty) {
-      // Show an error message or handle accordingly
-      return;
+      // Show AlertDialog for empty test name
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please enter a test name.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Save the test to Firestore
+      saveTestToFirestoreFunction(Test(
+        title: testName,
+        questions: questions,
+        creatorUid: widget.user?.uid ?? '',
+      ));
     }
-
-    // Save the test to Firestore
-    saveTestToFirestoreFunction(Test(title: testName, questions: questions));
   }
 
   void saveTestToFirestoreFunction(Test test) async {
     try {
-      // Access the Firestore instance
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      // Add a new document to the "tests" collection
+      print('User UID: ${widget.user?.uid}');
       DocumentReference testDocumentRef =
           await firestore.collection('tests').add({
+        'creatorUid': test.creatorUid,
         'title': test.title,
         'questions': test.questions
             .map((question) => {
@@ -98,9 +121,26 @@ class _CreateTestState extends State<CreateTest> {
                   'correctAnswer': question.correctOptionIndex,
                 })
             .toList(),
+        'submissions': [],
       });
 
-      print('Test saved to Firestore with ID: ${testDocumentRef.id}');
+      // Show success AlertDialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Test Published'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     } catch (e) {
       print('Error saving test to Firestore: $e');
     }
@@ -185,11 +225,16 @@ class _QuestionCardState extends State<QuestionCard> {
 class Test {
   String title;
   List<Question> questions;
+  String creatorUid; // New field to store the creator's UID
 
-  Test({required this.title, required this.questions});
+  Test({
+    required this.title,
+    required this.questions,
+    required this.creatorUid,
+  });
 
   @override
   String toString() {
-    return 'Test(title: $title, questions: $questions)';
+    return 'Test(title: $title, questions: $questions, creatorUid: $creatorUid)';
   }
 }

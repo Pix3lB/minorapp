@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../auth.dart';
 
-import '../student_dashboard.dart';
+import '../dashboard.dart';
 
 class loginPage extends StatefulWidget {
   const loginPage({super.key});
